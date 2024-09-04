@@ -11,23 +11,22 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 script {
-                    sh 'git clone https://$GITHUB_TOKEN@github.com/JORDAN-RYAN1/CI_CD-react-node-app.git'
+                    bat 'git clone https://%GITHUB_TOKEN%@github.com/JORDAN-RYAN1/CI_CD-react-node-app.git'
                 }
             }
         }
         stage('Build Backend and Frontend') {
             steps {
                 script {
-                    sh 'docker-compose build'
+                    bat 'docker-compose build'
                 }
             }
         }
         stage('Run Unit Tests') {
             steps {
                 script {
-                    // Here you can run unit tests for both frontend and backend if you have them.
-                    // For example, for Node.js backend:
-                    sh 'docker-compose run backend npm test'
+                    // Adjust this to run tests as needed in your Windows environment
+                    bat 'docker-compose run backend npm test'
                 }
             }
         }
@@ -44,22 +43,22 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'docker run --rm --name sonarqube-runner -v $(pwd):/usr/src sonarsource/sonar-scanner-cli'
+                    bat 'docker run --rm --name sonarqube-runner -v %cd%:/usr/src sonarsource/sonar-scanner-cli'
                 }
             }
         }
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker-compose build'
+                    bat 'docker-compose build'
                 }
             }
         }
         stage('Trivy Image Scan') {
             steps {
                 script {
-                    sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image myapp-backend:latest'
-                    sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image myapp-frontend:latest'
+                    bat 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image myapp-backend:latest'
+                    bat 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image myapp-frontend:latest'
                 }
             }
         }
@@ -67,7 +66,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        sh 'docker-compose push'
+                        bat 'docker-compose push'
                     }
                 }
             }
@@ -75,15 +74,16 @@ pipeline {
         stage('Deploy Application') {
             steps {
                 script {
-                    sh 'docker-compose up -d'
+                    bat 'docker-compose up -d'
                 }
             }
         }
     }
     post {
         always {
-            // Clean up any stopped containers and images
-            sh 'docker-compose down'
+            script {
+                bat 'docker-compose down'
+            }
         }
     }
 }
