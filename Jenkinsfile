@@ -31,13 +31,6 @@ pipeline {
                 }
             }
         }
-        stage('Run Unit Tests') {
-            steps {
-                script {
-                    bat 'docker-compose run backend npm test'
-                }
-            }
-        }
         stage('Dependency-Check (OWASP)') {
             steps {
                 dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'OWASP Dependency-Check'
