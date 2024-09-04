@@ -35,7 +35,7 @@ pipeline {
         }
         stage('Snyk Security Scan') {
             steps {
-                snykSecurity snykInstallation: 'snyk', organization: 'your-org', projectName: 'docker-react-node-app'
+                snykSecurity snykInstallation: 'snyk', organisation: 'your-org', projectName: 'docker-react-node-app'
             }
         }
         stage('SonarQube Analysis') {
