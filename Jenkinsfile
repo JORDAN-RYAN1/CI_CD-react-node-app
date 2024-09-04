@@ -8,9 +8,18 @@ pipeline {
         GITHUB_TOKEN = credentials('github-token')  // Securely reference the GitHub token
     }
     stages {
+        stage('Clean Workspace') {
+            steps {
+                script {
+                    // Remove existing directory if it exists
+                    bat 'IF EXIST CI_CD-react-node-app rmdir /S /Q CI_CD-react-node-app'
+                }
+            }
+        }
         stage('Clone Repository') {
             steps {
                 script {
+                    // Clone the repository
                     bat 'git clone https://%GITHUB_TOKEN%@github.com/JORDAN-RYAN1/CI_CD-react-node-app.git'
                 }
             }
@@ -25,7 +34,6 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 script {
-                    // Adjust this to run tests as needed in your Windows environment
                     bat 'docker-compose run backend npm test'
                 }
             }
