@@ -32,9 +32,9 @@ pipeline {
             }
         }
         stage('Dependency-Check (OWASP)') {
-            steps {
-                        dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'OWASP Dependency-Check'
-            }
+             steps {
+                    dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'OWSAP'
+                    }
         }
         stage('Snyk Security Scan') {
             steps {
