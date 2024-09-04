@@ -5,11 +5,14 @@ pipeline {
         SONARQUBE_TOKEN = 'squ_feb53dfea40073d2e89ee2e5c265df885bb30a41'
         DOCKERHUB_USER = 'jordanryan.jr001@gmail.com'
         DOCKERHUB_PASS = 'Docker@123'
+        GITHUB_TOKEN = credentials('github-token')  // Securely reference the GitHub token
     }
     stages {
         stage('Clone Repository') {
             steps {
-                git credentialsId: 'github-token', url: 'https://github.com/JORDAN-RYAN1/CI_CD-react-node-app.git'
+                script {
+                    sh 'git clone https://$GITHUB_TOKEN@github.com/JORDAN-RYAN1/CI_CD-react-node-app.git'
+                }
             }
         }
         stage('Build Backend and Frontend') {
