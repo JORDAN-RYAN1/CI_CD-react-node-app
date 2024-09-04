@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"  # Expose port 80 for the frontend
+    depends_on:
+      - backend  # Ensure the backend is running before the frontend starts
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"  # Expose port 5000 for the backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
