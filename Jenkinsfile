@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/your-username/docker-react-node-app.git'
+                git credentialsId: 'github-token', url: 'https://github.com/JORDAN-RYAN1/CI_CD-react-node-app.git'
             }
         }
         stage('Build Backend and Frontend') {
